@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:litera_app/core/theme/app_pallete.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -45,11 +46,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.red,
+                  color: Pallete.textColor,
                 ),
               ),
               const SizedBox(height: 20),
-              StepProgressIndicator(),
+              // StepProgressIndicator(),
               Form(
                 key: _formKey,
                 child: Column(
@@ -167,44 +168,44 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 }
 
-class StepProgressIndicator extends StatelessWidget {
-  const StepProgressIndicator({super.key});
+// class StepProgressIndicator extends StatelessWidget {
+//   const StepProgressIndicator({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 40,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.red,
-          ),
-          child: Text(
-            '1',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Container(
-          height: 2,
-          width: 80,
-          color: Colors.red,
-        ),
-        Container(
-          width: 40,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.grey,
-          ),
-          child: Text(
-            '2',
-            style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       children: [
+//         Container(
+//           width: 40,
+//           alignment: Alignment.center,
+//           decoration: BoxDecoration(
+//             shape: BoxShape.circle,
+//             color: Colors.red,
+//           ),
+//           child: Text(
+//             '1',
+//             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+//           ),
+//         ),
+//         Container(
+//           height: 2,
+//           width: 80,
+//           color: Colors.red,
+//         ),
+//         Container(
+//           width: 40,
+//           alignment: Alignment.center,
+//           decoration: BoxDecoration(
+//             shape: BoxShape.circle,
+//             color: Colors.grey,
+//           ),
+//           child: Text(
+//             '2',
+//             style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
