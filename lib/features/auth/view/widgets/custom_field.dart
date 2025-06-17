@@ -6,9 +6,12 @@ class CustomField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: hitText
+    return SizedBox(
+      height: 54,
+      child: TextFormField(
+        decoration: InputDecoration(
+          hintText: hitText,
+        ),
       ),
     );
   }

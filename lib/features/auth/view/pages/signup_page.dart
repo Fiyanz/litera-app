@@ -1,6 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
+import 'package:litera_app/features/auth/view/widgets/auth_button.dart';
+import 'package:litera_app/features/auth/view/widgets/custom_field.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -10,202 +11,113 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  bool _isUsernameValid = false;
-  bool _isEmailValid = false;
-  bool _isPasswordValid = false;
-
-  void _validateInputs() {
-    setState(() {
-      _isUsernameValid = _usernameController.text.isNotEmpty;
-      _isEmailValid = _emailController.text.contains('@') && 
-                      _emailController.text.contains('.com');
-      _isPasswordValid = _passwordController.text.length >= 8;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Daftar Akun',
+      appBar: AppBar(),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Daftar Akun',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Pallete.textColor, // Use your theme's text color
+              ),
+            ),
+            const SizedBox(height: 15),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Username',
                 style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Pallete.textColor,
-                ),
+                  fontSize: 20,
+                  color: Pallete.textColor, // Use your theme's text color
+                )
               ),
-              const SizedBox(height: 20),
-              // StepProgressIndicator(),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: _usernameController,
-                      decoration: InputDecoration(
-                        labelText: 'Username',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green),
-                        ),
-                        suffixIcon: _isUsernameValid 
-                          ? Icon(Icons.check, color: Colors.green)
-                          : null,
-                      ),
-                      onChanged: (value) => _validateInputs(),
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green),
-                        ),
-                        suffixIcon: _isEmailValid 
-                          ? Icon(Icons.check, color: Colors.green)
-                          : null,
-                      ),
-                      onChanged: (value) => _validateInputs(),
-                    ),
-                    const SizedBox(height: 15),
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green),
-                        ),
-                        suffixIcon: _isPasswordValid 
-                          ? Icon(Icons.check, color: Colors.green)
-                          : null,
-                      ),
-                      onChanged: (value) => _validateInputs(),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          // Lakukan proses pendaftaran di sini
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF6B2D3A),
-                        minimumSize: Size(double.infinity, 50),
-                      ),
-                      child: const Text(
-                        'Lanjut',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ],
-                ),
+            ),
+            CustomField(
+              hitText: 'Masukan Username',
+            ),
+            const SizedBox(height: 15),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Email',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Pallete.textColor, // Use your theme's text color
+                )
               ),
-              // const SizedBox(height: 15),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Divider(
-              //         color: Colors.grey,
-              //         thickness: 1,
-              //       ),
-              //     ),
-              //     Padding(
-              //       padding: const EdgeInsets.symmetric(horizontal: 10),
-              //       child: Text(
-              //         'Atau',
-              //         style: TextStyle(color: Colors.grey),
-              //       ),
-              //     ),
-              //     Expanded(
-              //       child: Divider(
-              //         color: Colors.grey,
-              //         thickness: 1,
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              const SizedBox(height: 10),
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(color: Colors.black),
-                  children: [
-                    TextSpan(text: 'Sudah punya akun? '),
-                    TextSpan(
-                      text: 'Log In',
-                      style: TextStyle(
-                        color: Colors.red,
-                        decoration: TextDecoration.underline,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pop(context);
-                        },
-                    ),
-                  ],
-                ),
+            ),
+            CustomField(
+              hitText: 'Masukan Email Anda',
+            ),
+            const SizedBox(height: 15),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Password',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Pallete.textColor, // Use your theme's text color
+                )
               ),
-            ],
-          ),
+            ),
+            CustomField(
+              hitText: 'Masukan Password Anda',
+            ),
+            const SizedBox(height: 15),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Password',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Pallete.textColor, // Use your theme's text color
+                )
+              ),
+            ),
+            CustomField(
+              hitText: 'Masukan Ulang Password Anda',
+            ),
+
+            const SizedBox(height: 20),
+            AuthButton(),
+
+            const SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Sudah punya akun? ',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Pallete.textColor, // Use your theme's text color
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // Navigate to Sign Up page
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Pallete.primaryColor, // Use your theme's primary color
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
-// class StepProgressIndicator extends StatelessWidget {
-//   const StepProgressIndicator({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         Container(
-//           width: 40,
-//           alignment: Alignment.center,
-//           decoration: BoxDecoration(
-//             shape: BoxShape.circle,
-//             color: Colors.red,
-//           ),
-//           child: Text(
-//             '1',
-//             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-//           ),
-//         ),
-//         Container(
-//           height: 2,
-//           width: 80,
-//           color: Colors.red,
-//         ),
-//         Container(
-//           width: 40,
-//           alignment: Alignment.center,
-//           decoration: BoxDecoration(
-//             shape: BoxShape.circle,
-//             color: Colors.grey,
-//           ),
-//           child: Text(
-//             '2',
-//             style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
