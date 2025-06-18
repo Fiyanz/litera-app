@@ -28,6 +28,7 @@ class _SignUpFormState extends State<SignUpForm> {
     birthDateController.dispose();
     genderController.dispose();
     addressController.dispose();
+    super.dispose();
   }
   
   // Controller for image picking
