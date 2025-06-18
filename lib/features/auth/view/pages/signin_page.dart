@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
+import 'package:litera_app/features/auth/view/pages/signup_page.dart';
 import 'package:litera_app/features/auth/view/widgets/auth_button.dart';
 import 'package:litera_app/features/auth/view/widgets/custom_field.dart';
 
-class SigninPage extends StatefulWidget {
-  const SigninPage({super.key});
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
 
   @override
-  State<SigninPage> createState() => _SigninPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _SigninPageState extends State<SigninPage> {
+class _SignInPageState extends State<SignInPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -78,19 +79,29 @@ class _SigninPageState extends State<SigninPage> {
               AuthButton(),
           
               const SizedBox(height: 15),
-              RichText(
-                text: TextSpan(
-                  text: 'Belum punya akun? ',
-                  style: Theme.of(context).textTheme.titleMedium, 
-                  children: [
-                    TextSpan(
-                      text: 'Daftar',
-                      style: const TextStyle(
-                        color: Pallete.primaryColor, // Use your theme's primary color
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  ]
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (context) => const SignUpPage()
+                    ),
+                  );
+                },
+                child: RichText(
+                  text: TextSpan(
+                    text: 'Belum punya akun? ',
+                    style: Theme.of(context).textTheme.titleMedium, 
+                    children: [
+                      TextSpan(
+                        text: 'Daftar',
+                        style: const TextStyle(
+                          color: Pallete.primaryColor, // Use your theme's primary color
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ]
+                  ),
                 ),
               )
             ],

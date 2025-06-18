@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
+import 'package:litera_app/features/auth/view/pages/signin_page.dart';
 import 'package:litera_app/features/auth/view/widgets/auth_button.dart';
 import 'package:litera_app/features/auth/view/widgets/custom_field.dart';
 
@@ -115,19 +116,29 @@ class _SignUpPageState extends State<SignUpPage> {
               AuthButton(),
         
               const SizedBox(height: 15),
-              RichText(
-                text: TextSpan(
-                  text: 'Sudah punya akun? ',
-                  style: Theme.of(context).textTheme.titleMedium, 
-                  children: [
-                    TextSpan(
-                      text: 'Login',
-                      style: const TextStyle(
-                        color: Pallete.primaryColor, // Use your theme's primary color
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  ]
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (context) => const SignInPage()
+                    ),
+                  );
+                },
+                child: RichText(
+                  text: TextSpan(
+                    text: 'Sudah punya akun? ',
+                    style: Theme.of(context).textTheme.titleMedium, 
+                    children: [
+                      TextSpan(
+                        text: 'Login',
+                        style: const TextStyle(
+                          color: Pallete.primaryColor, // Use your theme's primary color
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ]
+                  ),
                 ),
               )
             ],

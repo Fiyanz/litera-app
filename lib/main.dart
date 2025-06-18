@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/theme.dart';
-import 'package:litera_app/features/auth/view/pages/signin_page.dart';
-import 'package:litera_app/features/auth/view/pages/signup_form.dart';
+// import 'package:litera_app/features/auth/view/pages/signin_page.dart';
+// import 'package:litera_app/features/auth/view/pages/signup_form.dart';
 import 'package:litera_app/features/auth/view/pages/signup_page.dart';
 
 void main() {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.lightThemeMode,
-      home: const SigninPage(), // Change this to SigninPage() or SignUpForm() as needed
+      home: const SignUpPage(), // Change this to SigninPage() or SignUpForm() as needed
     );
   }
 }
