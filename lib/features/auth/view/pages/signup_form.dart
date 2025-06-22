@@ -215,7 +215,9 @@ class _SignUpFormState extends State<SignUpForm> {
                 ],
               ),
               const SizedBox(height: 20),
-              AuthButton(),
+              AuthButton(
+                buttonText: 'Daftar',
+              ),
             ],
           ),
         ),

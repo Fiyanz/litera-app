@@ -76,7 +76,9 @@ class _SignInPageState extends State<SignInPage> {
                 isPassword: true, // Use the controller for password
               ),
               const SizedBox(height: 20),
-              AuthButton(),
+              AuthButton(
+                buttonText: 'Login',
+              ),
           
               const SizedBox(height: 15),
               GestureDetector(

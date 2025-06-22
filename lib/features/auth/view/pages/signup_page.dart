@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
 import 'package:litera_app/features/auth/view/pages/signin_page.dart';
+import 'package:litera_app/features/auth/view/pages/signup_form.dart';
 import 'package:litera_app/features/auth/view/widgets/auth_button.dart';
 import 'package:litera_app/features/auth/view/widgets/custom_field.dart';
 
@@ -113,7 +114,17 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
         
               const SizedBox(height: 20),
-              AuthButton(),
+              AuthButton(
+                buttonText: 'Daftar',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SignUpForm(),
+                    ),
+                  );
+                },
+              ),
         
               const SizedBox(height: 15),
               GestureDetector(

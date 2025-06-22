@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/theme.dart';
+import 'package:litera_app/features/auth/view/pages/first_page.dart';
+// import 'package:litera_app/features/auth/view/pages/first_page.dart';
+// import 'package:litera_app/features/auth/view/pages/signin_page.dart';
 // import 'package:litera_app/features/auth/view/pages/signin_page.dart';
 // import 'package:litera_app/features/auth/view/pages/signup_form.dart';
-import 'package:litera_app/features/auth/view/pages/signup_page.dart';
+// import 'package:litera_app/features/auth/view/pages/signup_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,9 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Litera',
       theme: AppTheme.lightThemeMode,
-      home: const SignUpPage(), // Change this to SigninPage() or SignUpForm() as needed
+      home: const FirstPage(), // Change this to SigninPage() or SignUpForm() as needed
     );
   }
 }
