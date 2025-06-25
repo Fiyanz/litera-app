@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/theme.dart';
 import 'package:litera_app/features/auth/view/pages/first_page.dart';
+import 'package:litera_app/features/home/view/pages/home_page.dart';
 // import 'package:litera_app/features/auth/view/pages/first_page.dart';
 // import 'package:litera_app/features/auth/view/pages/signin_page.dart';
 // import 'package:litera_app/features/auth/view/pages/signin_page.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Litera',
       theme: AppTheme.lightThemeMode,
-      home: const FirstPage(), // Change this to SigninPage() or SignUpForm() as needed
+      home: const HomePage(), // Change this to SigninPage() or SignUpForm() as needed
     );
   }
 }
