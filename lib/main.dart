@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Litera',
       theme: AppTheme.lightThemeMode,
-      home: const HomePage(), // Change this to SigninPage() or SignUpForm() as needed
+      home: const FirstPage(), // Change this to SigninPage() or SignUpForm() as needed
     );
   }
 }
