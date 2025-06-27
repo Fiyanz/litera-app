@@ -22,23 +22,18 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  /// Ia menerima [viewModel] untuk memisahkan logika dari UI.
   void _showFilterDialog(BuildContext context, HomeViewModel viewModel) async {
-    // 1. Minta ViewModel untuk memulai pengambilan data.
-    // Tampilan akan secara otomatis diperbarui oleh Consumer untuk menunjukkan loading.
-    await viewModel.fetchFilterOptions();
+    // 1. Panggil ViewModel untuk mengambil data dan simpan hasilnya langsung.
+    final filterData = await viewModel.fetchFilterOptions();
 
     // Cek jika widget masih ada di tree sebelum menampilkan dialog
     if (!context.mounted) return;
 
-    // 2. Ambil data yang sudah siap dari ViewModel.
-    final filterData = viewModel.filterData;
-
-    // 3. Tampilkan dialog dengan data yang sudah didapat.
+    // 2. Tampilkan dialog dengan data yang sudah didapat.
     final result = await showDialog<Map<String, String>>(
       context: context,
       builder: (BuildContext dialogContext) {
-        // Kirim data ke widget dialog yang "bodoh"
+        // Kirim data yang sudah pasti ada ke widget dialog
         return FilterDialog(
           years: filterData['years'] ?? [],
           locations: filterData['locations'] ?? [],
@@ -47,11 +42,10 @@ class _HomePageState extends State<HomePage> {
       },
     );
 
-    // 4. Proses hasil dari dialog jika ada.
+    // 3. Proses hasil dari dialog jika ada.
     if (result != null) {
       print('Hasil filter yang akan dicari: $result');
       // TODO: Panggil method di ViewModel untuk melakukan pencarian
-      // contoh: viewModel.searchBooks(query: _searchController.text, filters: result);
     }
   }
 

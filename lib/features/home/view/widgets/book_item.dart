@@ -12,11 +12,11 @@ class BookItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        // Navigasi ke halaman detail dengan mengirim seluruh objek buku
         Navigator.push(
           context,
           MaterialPageRoute(
-            // Nanti kita akan aktifkan pengiriman data buku
-            builder: (context) => const BookDetailPage(/* book: book */),
+            builder: (context) => BookDetailPage(book: book),
           ),
         );
       },
@@ -28,31 +28,18 @@ class BookItem extends StatelessWidget {
             Expanded(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
-                // Pastikan kita menggunakan book.imageUrl
-                child: Image.network(
-                  book.imageUrl,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  // Ini adalah errorBuilder yang akan menangani jika gambar gagal dimuat
-                  // Ini akan menampilkan placeholder, BUKAN membuat aplikasi crash.
-                  errorBuilder: (context, error, stackTrace) {
-                    // Tambahkan print untuk membantu debug jika ada gambar yang error
-                    print("🚫 Gagal memuat gambar: ${book.imageUrl}");
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Pallete.secondaryColor.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.book_outlined,
-                          color: Pallete.textGrayColor,
-                          size: 40,
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                // PERBAIKAN: Ambil gambar pertama dari list
+                // Tambahkan pengecekan untuk menghindari error jika list kosong
+                child: book.imageUrls.isNotEmpty
+                    ? Image.network(
+                        book.imageUrls.first, // Ambil elemen pertama
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        errorBuilder: (context, error, stackTrace) {
+                          return _buildErrorPlaceholder();
+                        },
+                      )
+                    : _buildErrorPlaceholder(), // Tampilkan placeholder jika tidak ada gambar
               ),
             ),
             const SizedBox(height: 8),
@@ -77,6 +64,23 @@ class BookItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // Widget helper untuk placeholder jika gambar error atau tidak ada
+  Widget _buildErrorPlaceholder() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Pallete.secondaryColor.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: const Center(
+        child: Icon(
+          Icons.book_outlined,
+          color: Pallete.textGrayColor,
+          size: 40,
         ),
       ),
     );

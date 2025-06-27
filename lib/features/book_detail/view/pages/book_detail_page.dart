@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
-import '../../../../core/theme/app_pallete.dart'; // Import Pallete Anda
+import 'package:litera_app/core/models/book_model.dart';
+import 'package:litera_app/core/theme/app_pallete.dart';
+import 'package:litera_app/features/book_detail/view/widgets/book_image_slider.dart';
 import '../widgets/action_buttons_bar.dart';
 import '../widgets/book_info_section.dart';
+import '../widgets/comment_tab_view.dart';
 import '../widgets/loan_status_bar.dart';
+import '../widgets/review_tab_view.dart';
 
 class BookDetailPage extends StatefulWidget {
-  const BookDetailPage({super.key});
+  // PERBAIKAN 1: Deklarasikan bahwa halaman ini akan menerima sebuah 'Book'
+  final Book book; 
+
+  // PERBAIKAN 2: Perbarui constructor untuk mewajibkan parameter 'book'
+  const BookDetailPage({super.key, required this.book});
 
   @override
   State<BookDetailPage> createState() => _BookDetailPageState();
@@ -14,15 +22,26 @@ class BookDetailPage extends StatefulWidget {
 class _BookDetailPageState extends State<BookDetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  bool _showActionButtons = true;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(_handleTabSelection);
+  }
+
+  void _handleTabSelection() {
+    if (_tabController.index == 0) {
+      if (!_showActionButtons) setState(() { _showActionButtons = true; });
+    } else {
+      if (_showActionButtons) setState(() { _showActionButtons = false; });
+    }
   }
 
   @override
   void dispose() {
+    _tabController.removeListener(_handleTabSelection);
     _tabController.dispose();
     super.dispose();
   }
@@ -30,113 +49,97 @@ class _BookDetailPageState extends State<BookDetailPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detail Buku'),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              // PERBAIKAN 3: Gunakan data dari 'widget.book' untuk judul
+              title: Text(widget.book.title), 
+              pinned: true,
+              floating: true,
+              elevation: 0,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            SliverToBoxAdapter(
+              child: _buildTopContent(),
+            ),
+            SliverPersistentHeader(
+              delegate: _SliverAppBarDelegate(
+                TabBar(
+                  controller: _tabController,
+                  labelColor: Pallete.primaryColor,
+                  unselectedLabelColor: Colors.grey,
+                  indicatorColor: Pallete.primaryColor,
+                  tabs: const [
+                    Tab(text: 'Details'),
+                    Tab(text: 'Komentar'),
+                    Tab(text: 'Review'),
+                  ],
+                ),
+              ),
+              pinned: true,
+            ),
+          ];
+        },
+        body: TabBarView(
+          controller: _tabController,
+          children: const [
+            SingleChildScrollView(padding: EdgeInsets.all(16.0), child: BookInfoSection()),
+            CommentTabView(),
+            ReviewTabView(),
+          ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Book Cover Image
-              Container(
-                height: 250,
-                width: 180,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Pallete.textColor.withOpacity(0.1), // Menggunakan Pallete
-                      spreadRadius: 2,
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  // Ganti dengan URL gambar buku dari data Anda
-                  child: Image.network(
-                    'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1518613149l/38591242.jpg',
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Icon(Icons.book, size: 100, color: Pallete.textGrayColor); // Menggunakan Pallete
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              // Dots Indicator
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(3, (index) => Container(
-                  width: 8,
-                  height: 8,
-                  margin: const EdgeInsets.symmetric(horizontal: 2),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: index == 0 ? Pallete.primaryColor : Colors.grey.shade300, // Menggunakan Pallete
-                  ),
-                )),
-              ),
-              const SizedBox(height: 24),
-              
-              // Book Title
-              const Text(
-                'Laut Bercerita',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Pallete.textColor), // Menggunakan Pallete
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              
-              // Loan Status Bar
-              const LoanStatusBar(),
-              const SizedBox(height: 24),
-              
-              // Tab Bar for Details, Komentar, Review
-              TabBar(
-                controller: _tabController,
-                labelColor: Pallete.primaryColor, // Menggunakan Pallete
-                unselectedLabelColor: Pallete.textGrayColor, // Menggunakan Pallete
-                indicatorColor: Pallete.primaryColor, // Menggunakan Pallete
-                tabs: const [
-                  Tab(text: 'Details'),
-                  Tab(text: 'Komentar'),
-                  Tab(text: 'Review'),
-                ],
-              ),
-              const SizedBox(height: 16),
+      bottomNavigationBar: _showActionButtons
+    ? ActionButtonsBar(book: widget.book) // <-- Kirim data buku ke ActionButtonsBar
+    : null,
+    );
+  }
 
-              // Tab Bar View
-              SizedBox(
-                height: 350, // Beri tinggi agar TabBarView bisa di-render
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    // Details Tab
-                    const BookInfoSection(),
-                    
-                    // Comments Tab - Placeholder
-                    Center(child: Text('Komentar akan ditampilkan di sini.', style: TextStyle(color: Pallete.textGrayColor))), // Menggunakan Pallete
-                    
-                    // Reviews Tab - Placeholder
-                    Center(child: Text('Review akan ditampilkan di sini.', style: TextStyle(color: Pallete.textGrayColor))), // Menggunakan Pallete
-                  ],
-                ),
-              ),
-            ],
+  Widget _buildTopContent() {
+    return Column(
+      children: [
+        const SizedBox(height: 16),
+        // PERBAIKAN 4: Kirim daftar URL gambar ke widget slider
+        BookImageSlider(imageUrls: widget.book.imageUrls),
+        const SizedBox(height: 24),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            widget.book.title, // Judul dinamis
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
           ),
         ),
-      ),
-      // Bottom Action Buttons
-      bottomNavigationBar: const ActionButtonsBar(),
+        const SizedBox(height: 24),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: LoanStatusBar(),
+        ),
+        const SizedBox(height: 24),
+      ],
     );
   }
 }
+
+// Kelas helper tidak berubah...
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate(this._tabBar);
+  final TabBar _tabBar;
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: _tabBar,
+    );
+  }
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
+  }
+}
+

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:litera_app/core/models/book_model.dart';
+import 'package:litera_app/features/book_detail/view/widgets/loan_button_sheet.dart';
 import '../../../../core/theme/app_pallete.dart'; // Import Pallete Anda
 
 class ActionButtonsBar extends StatelessWidget {
-  const ActionButtonsBar({super.key});
+  final Book book;
+  const ActionButtonsBar({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +45,16 @@ class ActionButtonsBar extends StatelessWidget {
               ),
               onPressed: () {
                 // TODO: Implement loan functionality
-                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Memproses peminjaman buku...')),
+                //  ScaffoldMessenger.of(context).showSnackBar(
+                //   const SnackBar(content: Text('Memproses peminjaman buku...')),
+                // );
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true, // Penting agar sheet tidak tertutup keyboard
+                  backgroundColor: Colors.transparent, // Agar sudut melengkung terlihat
+                  builder: (context) {
+                    return LoanBottomSheet(book: book,);
+                  },
                 );
               },
               child: const Text('Pinjam Buku', style: TextStyle(fontSize: 16)),

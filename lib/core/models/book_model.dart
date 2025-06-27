@@ -6,7 +6,8 @@ class Book {
   final String id;
   final String title;
   final String author;
-  final String imageUrl;
+  final List<String> imageUrls;
+  final int? pricePerDay;
   // Anda bisa menambahkan properti lain di sini sesuai kebutuhan,
   // seperti sinopsis, penerbit, tahun terbit, dll.
 
@@ -14,6 +15,7 @@ class Book {
     required this.id,
     required this.title,
     required this.author,
-    required this.imageUrl,
+    required this.imageUrls,
+    this.pricePerDay,
   });
 }
