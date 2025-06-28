@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/theme.dart';
+import 'package:litera_app/features/auth/view/pages/first_page.dart';
+import 'package:litera_app/features/auth/viewmodel/auth_viewmodel.dart';
 // import 'package:litera_app/features/auth/view/pages/first_page.dart';
 import 'package:litera_app/features/home/viewmodel/home_viewmodel.dart';
-import 'package:litera_app/features/home/view/pages/home_page.dart';
+// import 'package:litera_app/features/home/view/pages/home_page.dart';
 import 'package:provider/provider.dart';
 // import 'package:litera_app/features/auth/view/pages/first_page.dart';
 // import 'package:litera_app/features/auth/view/pages/signin_page.dart';
@@ -12,10 +14,17 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => HomeViewModel(), // Pastikan Anda memiliki HomeViewModel
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => HomeViewModel(), // Pastikan Anda memiliki HomeViewModel
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AuthViewModel(),
+        )
+      ],
       child: MyApp(), // Ganti dengan SigninPage() atau SignUpForm() sesuai kebutuhan
-    )
+    ),
   );
 }
 
@@ -29,7 +38,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Litera',
       theme: AppTheme.lightThemeMode,
-      home: const HomePage(), // Change this to SigninPage() or SignUpForm() as needed
+      home: const FirstPage(), // Change this to SigninPage() or SignUpForm() as needed
     );
   }
 }

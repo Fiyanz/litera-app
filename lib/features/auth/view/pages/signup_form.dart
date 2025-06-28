@@ -5,6 +5,8 @@ import 'package:litera_app/features/auth/view/widgets/auth_button.dart';
 import 'package:litera_app/features/auth/view/widgets/custom_field.dart';
 import 'dart:io';
 
+import 'package:litera_app/features/home/view/pages/home_page.dart';
+
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -114,7 +116,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                     child: const Text(
                       'Upload',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Pallete.primaryLightColor),
                     ),
                   ),
                 ],
@@ -217,6 +219,14 @@ class _SignUpFormState extends State<SignUpForm> {
               const SizedBox(height: 20),
               AuthButton(
                 buttonText: 'Daftar',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(),
+                    ),
+                  );
+                },
               ),
             ],
           ),

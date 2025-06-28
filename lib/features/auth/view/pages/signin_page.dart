@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
+import 'package:litera_app/features/auth/view/pages/forgot_password_page.dart';
 import 'package:litera_app/features/auth/view/pages/signup_page.dart';
 import 'package:litera_app/features/auth/view/widgets/auth_button.dart';
 import 'package:litera_app/features/auth/view/widgets/custom_field.dart';
@@ -86,17 +87,17 @@ class _SignInPageState extends State<SignInPage> {
                   Navigator.push(
                     context, 
                     MaterialPageRoute(
-                      builder: (context) => const SignUpPage()
+                      builder: (context) => const ForgotPasswordPage()
                     ),
                   );
                 },
                 child: RichText(
                   text: TextSpan(
-                    text: 'Belum punya akun? ',
+                    text: 'Lupa Kata Sandi? ',
                     style: Theme.of(context).textTheme.titleMedium, 
                     children: [
                       TextSpan(
-                        text: 'Daftar',
+                        text: 'Atur Ulang Kata Sandi',
                         style: const TextStyle(
                           color: Pallete.primaryColor, // Use your theme's primary color
                           fontWeight: FontWeight.bold,
