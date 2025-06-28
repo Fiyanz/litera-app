@@ -220,11 +220,10 @@ class _SignUpFormState extends State<SignUpForm> {
               AuthButton(
                 buttonText: 'Daftar',
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    (route) => false, // Hapus semua rute sebelumnya
                   );
                 },
               ),

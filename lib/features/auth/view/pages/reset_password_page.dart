@@ -5,6 +5,7 @@ import 'package:litera_app/core/theme/app_pallete.dart'; // Sesuaikan path
 import 'package:litera_app/features/auth/view/pages/signin_page.dart'; // Navigasi kembali ke sign in
 import 'package:litera_app/features/auth/view/widgets/auth_button.dart'; // Sesuaikan path
 import 'package:litera_app/features/auth/view/widgets/custom_field.dart'; // Sesuaikan path
+import 'package:litera_app/features/auth/view/widgets/success_dialog.dart';
 import 'package:litera_app/features/auth/viewmodel/auth_viewmodel.dart'; // Sesuaikan path
 import 'package:provider/provider.dart';
 
@@ -70,14 +71,34 @@ class ResetPasswordPage extends StatelessWidget {
               AuthButton(
                 buttonText: "Lanjut",
                 onPressed: () {
-                  authViewModel.resetPassword();
+                  context.read<AuthViewModel>().resetPassword();
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false, // Pengguna harus menekan tombol
+                    builder: (BuildContext dialogContext) {
+                      return SuccessDialog(
+                        message: 'Password anda berhasil diperbarui!',
+                        onOkPressed: () {
+                          // 3. Setelah menekan "Oke", tutup dialog dan navigasi ke halaman login
+                          Navigator.of(dialogContext).pop(); // Tutup dialog
+                          
+                          // Navigasi ke SignInPage dan hapus semua halaman sebelumnya
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SignInPage()),
+                            (route) => false,
+                          );
+                        },
+                      );
+                    },
+                  );
                   // Setelah berhasil, kembali ke halaman login
                   // Di aplikasi nyata, mungkin tampilkan dialog sukses dulu
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SignInPage()),
-                    (route) => false, // Hapus semua rute sebelumnya
-                  );
+                  // Navigator.pushAndRemoveUntil(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => const SignInPage()),
+                  //   (route) => false, // Hapus semua rute sebelumnya
+                  // );
                 },
               ),
             ],

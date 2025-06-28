@@ -4,6 +4,7 @@ import 'package:litera_app/features/auth/view/pages/forgot_password_page.dart';
 import 'package:litera_app/features/auth/view/pages/signup_page.dart';
 import 'package:litera_app/features/auth/view/widgets/auth_button.dart';
 import 'package:litera_app/features/auth/view/widgets/custom_field.dart';
+import 'package:litera_app/features/home/view/pages/home_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -79,6 +80,13 @@ class _SignInPageState extends State<SignInPage> {
               const SizedBox(height: 20),
               AuthButton(
                 buttonText: 'Login',
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    (route) => false, // Hapus semua rute sebelumnya
+                  );
+                },
               ),
           
               const SizedBox(height: 15),
@@ -89,6 +97,7 @@ class _SignInPageState extends State<SignInPage> {
                     MaterialPageRoute(
                       builder: (context) => const ForgotPasswordPage()
                     ),
+                    
                   );
                 },
                 child: RichText(
