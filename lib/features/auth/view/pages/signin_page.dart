@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
 import 'package:litera_app/features/auth/view/pages/forgot_password_page.dart';
-import 'package:litera_app/features/auth/view/pages/signup_page.dart';
 import 'package:litera_app/features/auth/view/widgets/auth_button.dart';
 import 'package:litera_app/features/auth/view/widgets/custom_field.dart';
 import 'package:litera_app/features/home/view/pages/home_page.dart';

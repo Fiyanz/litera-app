@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/theme.dart';
 import 'package:litera_app/features/auth/view/pages/first_page.dart';
 import 'package:litera_app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:litera_app/features/bookmark/viewmodel/bookmark_viewmodel.dart';
 // import 'package:litera_app/features/auth/view/pages/first_page.dart';
 import 'package:litera_app/features/home/viewmodel/home_viewmodel.dart';
 // import 'package:litera_app/features/home/view/pages/home_page.dart';
@@ -21,7 +22,10 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (context) => AuthViewModel(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => BookmarkViewModel(),
+          ),
       ],
       child: MyApp(), // Ganti dengan SigninPage() atau SignUpForm() sesuai kebutuhan
     ),

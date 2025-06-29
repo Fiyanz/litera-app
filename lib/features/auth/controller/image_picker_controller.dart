@@ -7,6 +7,8 @@ class ImagePickerController {
   /// Callback untuk memberi tahu UI ketika gambar berhasil dipilih
   Function(File)? onImagePicked;
 
+  get images => null;
+
   Future<void> pickImageFromGallery() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -16,4 +18,6 @@ class ImagePickerController {
       }
     }
   }
+
+  void dispose() {}
 }
