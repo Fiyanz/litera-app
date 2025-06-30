@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
 import 'package:litera_app/features/add_book/view/pages/add_book_page.dart';
 import 'package:litera_app/features/bookmark/view/pages/bookmark_page.dart'; // Import halaman Bookmark
+import 'package:litera_app/features/chat/view/pages/chat_list_page.dart';
 import 'package:litera_app/features/home/viewmodel/home_viewmodel.dart';
 import 'package:litera_app/features/home/view/widgets/filter_dialog.dart';
 import 'package:litera_app/features/home/view/widgets/horizontal_book_list.dart';
 import 'package:litera_app/features/home/view/widgets/wave_clipper.dart';
 import 'package:provider/provider.dart';
 
-/// HomePage sekarang berfungsi sebagai "Cangkang" atau "Kerangka" utama aplikasi
-/// yang mengatur navigasi bawah dan menampilkan halaman yang sesuai.
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     _HomePageContent(),   // Halaman Home (index 0)
     BookmarkPage(),       // Halaman Bookmark (index 1)
     AddBookPage(),
-    Center(child: Text('Halaman Chat')),   // Placeholder untuk index 3
+    ChatListPage(),   // Placeholder untuk index 3
     Center(child: Text('Halaman Profil')), // Placeholder untuk index 4
   ];
 
@@ -39,11 +39,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 2. GUNAKAN INDEXEDSTACK SEBAGAI BODY
-      // IndexedStack adalah widget yang sangat efisien untuk navigasi tab.
-      // Ia hanya menampilkan satu child (berdasarkan `index`), namun menjaga
-      // semua child lainnya tetap "hidup" di memori. Hasilnya, saat Anda
-      // kembali ke halaman sebelumnya, state-nya (seperti posisi scroll) tidak hilang.
+      
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,
@@ -76,9 +72,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// 3. KONTEN HALAMAN HOME YANG DIEKSTRAK
-// Ini adalah seluruh kode UI dari HomePage Anda sebelumnya, yang sekarang
-// menjadi widget mandiri. Ini membuat kode lebih rapi dan terorganisir.
+
 class _HomePageContent extends StatelessWidget {
   const _HomePageContent();
 

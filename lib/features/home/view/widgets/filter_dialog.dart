@@ -1,8 +1,13 @@
+// lib/features/home/view/widgets/filter_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
 
+/// Sebuah dialog kustom yang menampilkan beberapa DropdownButton untuk memfilter data.
+///
+/// Widget ini menerima daftar opsi untuk tahun, lokasi, dan kategori.
+/// Saat tombol 'Cari' ditekan, ia akan mengembalikan Map yang berisi
+/// nilai-nilai yang dipilih melalui `Navigator.pop(result)`.
 class FilterDialog extends StatefulWidget {
-  // 1. TERIMA DATA DARI LUAR
   final List<String> years;
   final List<String> locations;
   final List<String> categories;
@@ -19,19 +24,34 @@ class FilterDialog extends StatefulWidget {
 }
 
 class _FilterDialogState extends State<FilterDialog> {
-  // Variabel untuk menyimpan nilai yang dipilih
+  // Variabel state untuk menyimpan nilai dropdown yang sedang dipilih.
   String? _selectedYear;
   String? _selectedLocation;
   String? _selectedCategory;
 
-  // HAPUS DATA DUMMY DARI SINI
+  /// Method untuk membersihkan semua filter yang dipilih.
+  void _resetFilters() {
+    setState(() {
+      _selectedYear = null;
+      _selectedLocation = null;
+      _selectedCategory = null;
+    });
+  }
+
+  /// Method untuk mengirim hasil filter dan menutup dialog.
+  void _applyFilters() {
+    final result = {
+      'year': _selectedYear ?? '',
+      'location': _selectedLocation ?? '',
+      'category': _selectedCategory ?? '',
+    };
+    Navigator.of(context).pop(result);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: _buildDialogContent(context),
@@ -40,26 +60,27 @@ class _FilterDialogState extends State<FilterDialog> {
 
   Widget _buildDialogContent(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(24.0),
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(16.0),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10.0,
-            offset: Offset(0.0, 10.0),
-          ),
-        ],
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.min, // Membuat tinggi dialog menyesuaikan konten
         children: <Widget>[
+          // PENAMBAHAN: Judul Dialog
+          const Text(
+            'Filter Pencarian',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 24.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              // 2. GUNAKAN DATA DARI WIDGET
               Expanded(child: _buildDropdown(widget.years, 'Tahun', _selectedYear, (val) => setState(() => _selectedYear = val))),
               const SizedBox(width: 10),
               Expanded(child: _buildDropdown(widget.locations, 'Lokasi', _selectedLocation, (val) => setState(() => _selectedLocation = val))),
@@ -67,35 +88,41 @@ class _FilterDialogState extends State<FilterDialog> {
               Expanded(child: _buildDropdown(widget.categories, 'Kategori', _selectedCategory, (val) => setState(() => _selectedCategory = val))),
             ],
           ),
-          const SizedBox(height: 24.0),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Pallete.primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+          const SizedBox(height: 32.0),
+          // PENAMBAHAN: Tombol Reset dan Tombol Cari dalam satu baris
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: _resetFilters,
+                child: const Text('Reset', style: TextStyle(color: Pallete.textGrayColor)),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 12),
-            ),
-            onPressed: () {
-              final result = {
-                'year': _selectedYear ?? '',
-                'location': _selectedLocation ?? '',
-                'category': _selectedCategory ?? '',
-              };
-              Navigator.of(context).pop(result);
-            },
-            child: const Text(
-              'Cari',
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
+              const SizedBox(width: 8),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Pallete.primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                ),
+                onPressed: _applyFilters,
+                child: const Text(
+                  'Cari',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
+  /// Helper method untuk membangun satu widget DropdownButton yang sudah digayakan.
   Widget _buildDropdown(List<String> items, String hint, String? value, ValueChanged<String?> onChanged) {
     return Container(
+      height: 50, // Memberi tinggi yang konsisten untuk semua dropdown
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
@@ -104,22 +131,15 @@ class _FilterDialogState extends State<FilterDialog> {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           isExpanded: true,
-          hint: Text(
-            hint, 
-            style: TextStyle(color: Colors.grey.shade600),
-            overflow: TextOverflow.ellipsis,
-          ),
+          hint: Text(hint, style: TextStyle(color: Colors.grey.shade600), overflow: TextOverflow.ellipsis),
           value: value,
           icon: const Icon(Icons.arrow_drop_down),
-          // Pastikan item tidak kosong untuk menghindari error
-          items: items.isNotEmpty
-              ? items.map<DropdownMenuItem<String>>((String val) {
-                  return DropdownMenuItem<String>(
-                    value: val,
-                    child: Text(val),
-                  );
-                }).toList()
-              : [], // Jika kosong, berikan list kosong
+          items: items.map<DropdownMenuItem<String>>((String val) {
+            return DropdownMenuItem<String>(
+              value: val,
+              child: Text(val),
+            );
+          }).toList(),
           onChanged: onChanged,
         ),
       ),

@@ -1,43 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:litera_app/core/models/book_model.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
+import 'package:litera_app/features/book_detail/model/book_info.dart';
+import 'package:litera_app/features/book_detail/view/widgets/action_buttons_bar.dart';
 import 'package:litera_app/features/book_detail/view/widgets/book_image_slider.dart';
-import '../widgets/action_buttons_bar.dart';
-import '../widgets/book_info_section.dart';
-import '../widgets/comment_tab_view.dart';
-import '../widgets/loan_status_bar.dart';
-import '../widgets/review_tab_view.dart';
+import 'package:litera_app/features/book_detail/view/widgets/book_info_section.dart';
+import 'package:litera_app/features/book_detail/view/widgets/comment_tab_view.dart';
 
 class BookDetailPage extends StatefulWidget {
-  // PERBAIKAN 1: Deklarasikan bahwa halaman ini akan menerima sebuah 'Book'
-  final Book book; 
+  // Constructor ini sudah benar, halaman ini siap menerima data dari luar.
+  final String bookId;
+  final String ownerId;
+  final int pricePerDay;
+  final List<String> imageUrls;
+  final BookInfo bookInfo;
 
-  // PERBAIKAN 2: Perbarui constructor untuk mewajibkan parameter 'book'
-  const BookDetailPage({super.key, required this.book});
+  const BookDetailPage({
+    super.key,
+    required this.bookId,
+    required this.ownerId,
+    required this.pricePerDay,
+    required this.imageUrls,
+    required this.bookInfo,
+  });
 
   @override
   State<BookDetailPage> createState() => _BookDetailPageState();
 }
 
-class _BookDetailPageState extends State<BookDetailPage>
-    with SingleTickerProviderStateMixin {
+class _BookDetailPageState extends State<BookDetailPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  bool _showActionButtons = true;
+  bool _showActionButtons = true; 
+
+  void _handleTabSelection() {
+  // Jika tab yang dipilih adalah tab pertama (index 0, yaitu "Details")
+  if (_tabController.index == 0) {
+    // Jika tombol sedang tidak tampil, maka tampilkan
+    if (!_showActionButtons) {
+      setState(() {
+        _showActionButtons = true;
+      });
+    }
+  } else { // Jika tab lain yang dipilih
+    // Jika tombol sedang tampil, maka sembunyikan
+    if (_showActionButtons) {
+      setState(() {
+        _showActionButtons = false;
+      });
+    }
+  }
+}
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(_handleTabSelection);
+    // Controller diatur untuk 2 tab
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      // Panggil fungsi untuk menangani perubahan tab
+      _handleTabSelection();
+    });
   }
 
-  void _handleTabSelection() {
-    if (_tabController.index == 0) {
-      if (!_showActionButtons) setState(() { _showActionButtons = true; });
-    } else {
-      if (_showActionButtons) setState(() { _showActionButtons = false; });
-    }
-  }
 
   @override
   void dispose() {
@@ -53,15 +76,19 @@ class _BookDetailPageState extends State<BookDetailPage>
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
-              // PERBAIKAN 3: Gunakan data dari 'widget.book' untuk judul
-              title: Text(widget.book.title), 
+              // PERBAIKAN: Menggunakan data dari widget -> widget.bookInfo.title
+              title: Text(widget.bookInfo.title),
               pinned: true,
               floating: true,
-              elevation: 0,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            ),
-            SliverToBoxAdapter(
-              child: _buildTopContent(),
+              backgroundColor: Pallete.primaryLightColor,
+              expandedHeight: 350.0,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Padding(
+                  padding: const EdgeInsets.only(top: 90.0),
+                  // PERBAIKAN: Menggunakan data dari widget -> widget.imageUrls
+                  child: BookImageSlider(imageUrls: widget.imageUrls),
+                ),
+              ),
             ),
             SliverPersistentHeader(
               delegate: _SliverAppBarDelegate(
@@ -70,10 +97,10 @@ class _BookDetailPageState extends State<BookDetailPage>
                   labelColor: Pallete.primaryColor,
                   unselectedLabelColor: Colors.grey,
                   indicatorColor: Pallete.primaryColor,
+                  // PERBAIKAN: Dirapikan menjadi 2 tab yang sesuai
                   tabs: const [
                     Tab(text: 'Details'),
                     Tab(text: 'Komentar'),
-                    Tab(text: 'Review'),
                   ],
                 ),
               ),
@@ -83,46 +110,33 @@ class _BookDetailPageState extends State<BookDetailPage>
         },
         body: TabBarView(
           controller: _tabController,
-          children: const [
-            SingleChildScrollView(padding: EdgeInsets.all(16.0), child: BookInfoSection()),
-            CommentTabView(),
-            ReviewTabView(),
+          // PERBAIKAN: Hanya ada 2 halaman/view untuk 2 tab
+          children: [
+            // Tab 1: Details
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              // PERBAIKAN: Menggunakan data dari widget -> widget.bookInfo
+              child: BookInfoSection(bookInfo: widget.bookInfo),
+            ),
+            // Tab 2: Komentar
+            const CommentTabView(),
           ],
         ),
       ),
       bottomNavigationBar: _showActionButtons
-    ? ActionButtonsBar(book: widget.book) // <-- Kirim data buku ke ActionButtonsBar
-    : null,
-    );
-  }
-
-  Widget _buildTopContent() {
-    return Column(
-      children: [
-        const SizedBox(height: 16),
-        // PERBAIKAN 4: Kirim daftar URL gambar ke widget slider
-        BookImageSlider(imageUrls: widget.book.imageUrls),
-        const SizedBox(height: 24),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            widget.book.title, // Judul dinamis
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        const SizedBox(height: 24),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: LoanStatusBar(),
-        ),
-        const SizedBox(height: 24),
-      ],
+      ? ActionButtonsBar(
+          bookId: widget.bookId,
+          bookTitle: widget.bookInfo.title,
+          bookOwnerId: widget.ownerId,
+          bookImageUrl: widget.imageUrls.isNotEmpty ? widget.imageUrls[0] : '',
+          pricePerDay: widget.pricePerDay,
+        )
+      : null,
     );
   }
 }
 
-// Kelas helper tidak berubah...
+// Class helper untuk TabBar menempel, tidak ada perubahan
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(this._tabBar);
   final TabBar _tabBar;
@@ -138,8 +152,5 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     );
   }
   @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
-  }
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) => false;
 }
-

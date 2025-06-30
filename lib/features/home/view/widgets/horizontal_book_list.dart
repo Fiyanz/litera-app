@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:litera_app/core/theme/app_pallete.dart'; 
-import 'package:litera_app/core/models/book_model.dart';
+import 'package:litera_app/core/theme/app_pallete.dart';
+import 'package:litera_app/features/home/model/home_book_item_data.dart';
 import 'package:litera_app/features/home/view/widgets/book_item.dart';
 
 class HorizontalBookList extends StatelessWidget {
   final String sectionTitle;
-  final List<Book> books; 
+  // PERBAIKAN 2: Ganti tipe data list menjadi HomeBookItemData
+  final List<HomeBookItemData> books; 
 
   const HorizontalBookList({
     super.key,
     required this.sectionTitle,
-    required this.books, // Widget ini sekarang membutuhkan daftar buku
+    required this.books,
   });
 
   @override
@@ -18,7 +19,7 @@ class HorizontalBookList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Judul Sesi (misal: "Buku yang sering dipinjam")
+        // Judul Sesi
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
           child: Text(
@@ -32,18 +33,17 @@ class HorizontalBookList extends StatelessWidget {
         ),
         // List Buku Horizontal
         SizedBox(
-          height: 230, // Sedikit menambah tinggi untuk mengakomodasi teks penulis
+          height: 230, // Tinggi sudah sesuai untuk BookItem
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: books.length, // 5. Gunakan panjang dari list buku yang sebenarnya
+            itemCount: books.length,
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             itemBuilder: (context, index) {
-              final book = books[index]; // Ambil objek buku saat ini
-              // Kita beri jarak antar item buku di sini
+              final bookData = books[index]; // Variabel ini sekarang bertipe HomeBookItemData
               return Padding(
                 padding: const EdgeInsets.only(right: 12.0),
-                // 6. Kirim seluruh objek 'book' ke BookItem
-                child: BookItem(book: book),
+                // PERBAIKAN 3: Kirim 'bookData' ke parameter 'bookData' di BookItem
+                child: BookItem(bookData: bookData),
               );
             },
           ),

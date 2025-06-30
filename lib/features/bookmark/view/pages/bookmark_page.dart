@@ -1,33 +1,47 @@
+// lib/features/bookmark/view/pages/bookmark_page.dart
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
 import 'package:litera_app/features/bookmark/view/widgets/bookmarked_book_item.dart';
 import 'package:litera_app/features/bookmark/viewmodel/bookmark_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class BookmarkPage extends StatelessWidget {
+// PERBAIKAN 1: Ubah menjadi StatefulWidget
+class BookmarkPage extends StatefulWidget {
+  // PERBAIKAN 2: Hapus parameter dari constructor. Halaman ini tidak butuh data dari luar.
   const BookmarkPage({super.key});
 
   @override
+  State<BookmarkPage> createState() => _BookmarkPageState();
+}
+
+class _BookmarkPageState extends State<BookmarkPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    // PERBAIKAN 3: Panggil method untuk mengambil data saat halaman pertama kali dibuka.
+    // 'listen: false' penting di dalam initState.
+    // Kita gunakan Future.microtask untuk memastikan context sudah siap saat dipanggil.
+    Future.microtask(() {
+      Provider.of<BookmarkViewModel>(context, listen: false).fetchBookmarks();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Kita gunakan ChangeNotifierProvider di sini jika belum disediakan di atasnya
-    // Namun, cara terbaik adalah menyediakannya di main.dart
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Bookmark',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: const Text('Bookmark', style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
-            onPressed: () {
-              // TODO: Aksi untuk notifikasi
-            },
+            onPressed: () {},
             icon: const Icon(Icons.notifications_none_outlined, size: 28),
           ),
         ],
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
       ),
+      // Consumer akan "mendengarkan" perubahan dari BookmarkViewModel
       body: Consumer<BookmarkViewModel>(
         builder: (context, viewModel, child) {
           if (viewModel.isLoading) {
@@ -45,15 +59,15 @@ class BookmarkPage extends StatelessWidget {
           return GridView.builder(
             padding: const EdgeInsets.all(16.0),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,        // 3 kolom
-              crossAxisSpacing: 16.0,   // Jarak horizontal antar item
-              mainAxisSpacing: 16.0,    // Jarak vertikal antar item
-              childAspectRatio: 0.55,   // Rasio lebar/tinggi item
+              crossAxisCount: 3,
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+              childAspectRatio: 0.55,
             ),
             itemCount: viewModel.bookmarkedBooks.length,
             itemBuilder: (context, index) {
               final book = viewModel.bookmarkedBooks[index];
-              return BookmarkedBookItem(book: book);
+              return BookmarkedBookItem(bookData: book);
             },
           );
         },

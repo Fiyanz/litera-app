@@ -1,23 +1,26 @@
+// lib/features/home/viewmodel/home_viewmodel.dart
 import 'package:flutter/material.dart';
-import 'package:litera_app/core/models/book_model.dart';
+import 'package:litera_app/features/book_detail/model/book_info.dart';
+import 'package:litera_app/features/home/model/home_book_item_data.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  // ... (properti lain tidak berubah)
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  List<Book> _popularBooks = [];
-  List<Book> get popularBooks => _popularBooks;
-  List<Book> _recommendedBooks = [];
-  List<Book> get recommendedBooks => _recommendedBooks;
-  List<Book> _newReleaseBooks = [];
-  List<Book> get newReleaseBooks => _newReleaseBooks;
+  // PERBAIKAN 3: Ganti tipe data semua list menjadi HomeBookItemData
+  List<HomeBookItemData> _popularBooks = [];
+  List<HomeBookItemData> get popularBooks => _popularBooks;
 
+  List<HomeBookItemData> _recommendedBooks = [];
+  List<HomeBookItemData> get recommendedBooks => _recommendedBooks;
+
+  List<HomeBookItemData> _newReleaseBooks = [];
+  List<HomeBookItemData> get newReleaseBooks => _newReleaseBooks;
 
   HomeViewModel() {
+    // Panggil method fetch data saat ViewModel pertama kali dibuat
     fetchAllBookLists();
   }
-
 
   void _setLoading(bool value) {
     _isLoading = value;
@@ -26,78 +29,53 @@ class HomeViewModel extends ChangeNotifier {
 
   Future<void> fetchAllBookLists() async {
     _setLoading(true);
+    // Simulasi jeda untuk mengambil data dari API
     await Future.delayed(const Duration(seconds: 2));
 
     _popularBooks = [
-      // Buku dengan 3 gambar
-      Book(
-        id: '1',
-        title: 'Laut Bercerita',
-        author: 'Leila S. Chudori',
-        // PERBAIKAN: Gunakan 'imageUrls' dengan List<String>
-        imageUrls: [
-          'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1518613149l/38591242.jpg',
-          'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1666624933l/63013414.jpg',
-          'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1518613149i/38591242.jpg',
-        ],
+      HomeBookItemData(
+        bookId: 'bk_123', ownerId: 'pemilik_789', pricePerDay: 1000,
+        // GANTI URL INI
+        imageUrls: ['https://ui-avatars.com/api/?name=Bumi+Manusia&size=250&background=random&color=fff&font-size=0.3'],
+        bookInfo: BookInfo(title: 'Bumi Manusia', author: 'Pramoedya A. Toer', publisher: 'Hasta Mitra', yearPublished: '1980', pageCount: '535', isbn: '979-8659-10-5', category: 'Fiksi Sejarah', address: 'Jl. Merdeka No. 45, Bandung'),
       ),
-      // Buku dengan 1 gambar
-      Book(
-        id: '2',
-        title: 'Bumi Manusia',
-        author: 'Pramoedya A. Toer',
-        // PERBAIKAN: Gunakan 'imageUrls' dengan List<String>
-        imageUrls: [
-          'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1559828538l/1852199.jpg'
-        ],
-      ),
-      Book(
-        id: '2',
-        title: 'Bumi Manusia',
-        author: 'Pramoedya A. Toer',
-        // PERBAIKAN: Gunakan 'imageUrls' dengan List<String>
-        imageUrls: [
-          'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1559828538l/1852199.jpg'
-        ],
-      ),
-      Book(
-        id: '2',
-        title: 'Bumi Manusia',
-        author: 'Pramoedya A. Toer',
-        // PERBAIKAN: Gunakan 'imageUrls' dengan List<String>
-        imageUrls: [
-          'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1559828538l/1852199.jpg'
-        ],
+      HomeBookItemData(
+        bookId: 'bk_789', ownerId: 'pemilik_987', pricePerDay: 1200,
+        // GANTI URL INI
+        imageUrls: ['https://ui-avatars.com/api/?name=Pulang&size=250&background=random&color=fff&font-size=0.3'],
+        bookInfo: BookInfo(title: 'Pulang', author: 'Tere Liye', publisher: 'Republika', yearPublished: '2015', pageCount: '400', isbn: '978-602-082-212-9', category: 'Fiksi', address: 'Jl. Sudirman No. 1, Jakarta'),
       ),
     ];
 
     _recommendedBooks = [
-      Book(
-        id: '4',
-        title: 'Pulang',
-        author: 'Tere Liye',
-        imageUrls: ['https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1447943553l/27834785.jpg']
+       HomeBookItemData(
+        bookId: 'bk_456', ownerId: 'pemilik_123', pricePerDay: 500,
+        // GANTI URL INI
+        imageUrls: ['https://ui-avatars.com/api/?name=Laut+Bercerita&size=250&background=random&color=fff&font-size=0.3'],
+        bookInfo: BookInfo(title: 'Laut Bercerita', author: 'Leila S. Chudori', publisher: 'KPG', yearPublished: '2017', pageCount: '379', isbn: '978-602-424-694-5', category: 'Fiksi', address: 'Jl. Raya No. 123, Jakarta'),
       ),
     ];
-
+    
     _newReleaseBooks = [
-       Book(
-        id: '6',
-        title: 'Kitab Kawin',
-        author: 'Laksmi Pamuntjak',
-        imageUrls: ['https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1675765694l/63032791.jpg']
-       ),
+      HomeBookItemData(
+        bookId: 'bk_654', ownerId: 'pemilik_456', pricePerDay: 1500,
+        // GANTI URL INI
+        imageUrls: ['https://ui-avatars.com/api/?name=Kitab+Kawin&size=250&background=random&color=fff&font-size=0.3'],
+        bookInfo: BookInfo(title: 'Kitab Kawin', author: 'Laksmi Pamuntjak', publisher: 'Gramedia', yearPublished: '2023', pageCount: '500', isbn: '978-602-065-225-8', category: 'Antologi', address: 'Jl. Gajah Mada No. 10, Semarang'),
+      ),
     ];
     
+    notifyListeners();
     _setLoading(false);
   }
+
   Future<Map<String, List<String>>> fetchFilterOptions() async {
     _setLoading(true);
-    await Future.delayed(const Duration(seconds: 1)); 
+    await Future.delayed(const Duration(milliseconds: 800)); 
 
     final Map<String, List<String>> filterData = {
       'years': ['2025', '2024', '2023', '2022', '2021'],
-      'locations': ['Jakarta', 'Surabaya', 'Bandung', 'Yogyakarta'],
+      'locations': ['Surabaya', 'Jakarta', 'Bandung', 'Yogyakarta'],
       'categories': ['Fiksi', 'Non-Fiksi', 'Sains', 'Sejarah', 'Biografi'],
     };
     

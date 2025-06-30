@@ -1,21 +1,29 @@
+// lib/features/bookmark/view/widgets/bookmarked_book_item.dart
 import 'package:flutter/material.dart';
-import 'package:litera_app/core/models/book_model.dart';
-import 'package:litera_app/features/book_detail/view/pages/book_detail_page.dart'; // Import halaman detail
+import 'package:litera_app/features/book_detail/view/pages/book_detail_page.dart';
+import 'package:litera_app/features/bookmark/models/book_info.dart';
+
 
 class BookmarkedBookItem extends StatelessWidget {
-  final Book book;
+  final BookmarkedItemData bookData;
 
-  const BookmarkedBookItem({super.key, required this.book});
+  const BookmarkedBookItem({super.key, required this.bookData});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigasi ke BookDetailPage saat item diklik
+        // PERBAIKAN: Navigasi ke BookDetailPage dengan mengirim semua data yang dibutuhkan
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => BookDetailPage(book: book),
+            builder: (context) => BookDetailPage(
+              bookId: bookData.bookId,
+              ownerId: bookData.ownerId,
+              pricePerDay: bookData.pricePerDay,
+              imageUrls: bookData.imageUrls,
+              bookInfo: bookData.bookInfo,
+            ),
           ),
         );
       },
@@ -26,14 +34,12 @@ class BookmarkedBookItem extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12.0),
               child: Image.network(
-                book.imageUrls.isNotEmpty ? book.imageUrls[0] : '',
+                bookData.displayImageUrl, // Gunakan data dari model
                 fit: BoxFit.cover,
-                // Tampilkan loading indicator saat gambar dimuat
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
                   return const Center(child: CircularProgressIndicator());
                 },
-                // Tampilkan ikon error jika gambar gagal dimuat
                 errorBuilder: (context, error, stackTrace) {
                   return const Icon(Icons.broken_image, size: 48, color: Colors.grey);
                 },
@@ -42,11 +48,8 @@ class BookmarkedBookItem extends StatelessWidget {
           ),
           const SizedBox(height: 8.0),
           Text(
-            book.title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
+            bookData.title, // Gunakan data dari model
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,

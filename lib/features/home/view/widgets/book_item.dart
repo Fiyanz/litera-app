@@ -1,22 +1,30 @@
+// lib/features/home/view/widgets/book_item.dart
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
 import 'package:litera_app/features/book_detail/view/pages/book_detail_page.dart';
-import 'package:litera_app/core/models/book_model.dart';
+import 'package:litera_app/features/home/model/home_book_item_data.dart'; // <-- IMPORT MODEL BARU
 
 class BookItem extends StatelessWidget {
-  final Book book;
+  // PERBAIKAN 1: Gunakan model HomeBookItemData
+  final HomeBookItemData bookData;
 
-  const BookItem({super.key, required this.book});
+  const BookItem({super.key, required this.bookData});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigasi ke halaman detail dengan mengirim seluruh objek buku
+        // PERBAIKAN 2: Navigasi ke BookDetailPage dengan mengirim semua data yang benar
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => BookDetailPage(book: book),
+            builder: (context) => BookDetailPage(
+              bookId: bookData.bookId,
+              ownerId: bookData.ownerId,
+              pricePerDay: bookData.pricePerDay,
+              imageUrls: bookData.imageUrls,
+              bookInfo: bookData.bookInfo,
+            ),
           ),
         );
       },
@@ -28,23 +36,19 @@ class BookItem extends StatelessWidget {
             Expanded(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
-                // PERBAIKAN: Ambil gambar pertama dari list
-                // Tambahkan pengecekan untuk menghindari error jika list kosong
-                child: book.imageUrls.isNotEmpty
+                child: bookData.displayImageUrl.isNotEmpty
                     ? Image.network(
-                        book.imageUrls.first, // Ambil elemen pertama
+                        bookData.displayImageUrl, // Gunakan data dari model
                         fit: BoxFit.cover,
                         width: double.infinity,
-                        errorBuilder: (context, error, stackTrace) {
-                          return _buildErrorPlaceholder();
-                        },
+                        errorBuilder: (context, error, stackTrace) => _buildErrorPlaceholder(),
                       )
-                    : _buildErrorPlaceholder(), // Tampilkan placeholder jika tidak ada gambar
+                    : _buildErrorPlaceholder(),
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              book.title,
+              bookData.title, // Gunakan data dari model
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -55,7 +59,7 @@ class BookItem extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              book.author,
+              bookData.author, // Gunakan data dari model
               style: const TextStyle(
                 fontSize: 12,
                 color: Pallete.textGrayColor,
@@ -69,7 +73,6 @@ class BookItem extends StatelessWidget {
     );
   }
 
-  // Widget helper untuk placeholder jika gambar error atau tidak ada
   Widget _buildErrorPlaceholder() {
     return Container(
       decoration: BoxDecoration(

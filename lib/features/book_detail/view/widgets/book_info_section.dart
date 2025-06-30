@@ -1,32 +1,37 @@
+// lib/features/book_detail/view/widgets/book_info_section.dart
 import 'package:flutter/material.dart';
-import '../../../../core/theme/app_pallete.dart'; // Import Pallete Anda
+import 'package:litera_app/core/theme/app_pallete.dart';
+import 'package:litera_app/features/book_detail/model/book_info.dart'; // <-- IMPORT MODEL BARU
 
 class BookInfoSection extends StatelessWidget {
-  const BookInfoSection({super.key});
+  // PERBAIKAN 1: Widget ini sekarang menerima objek BookInfo
+  final BookInfo bookInfo;
+
+  const BookInfoSection({super.key, required this.bookInfo});
 
   @override
   Widget build(BuildContext context) {
-    // Data ini seharusnya datang dari model buku Anda
-    final bookDetails = {
-      'Judul buku': 'Laut Bercerita',
-      'Pengarang': 'Leila S. Chudori',
-      'Penerbit': 'Kepustakaan Populer Gramedia',
-      'Tahun Terbit': '2017',
-      'Halaman': '379',
-      'ISBN': '978-602-424-694-5',
-      'Kategori Buku': 'Fiksi',
-    };
+    // PERBAIKAN 2: Hapus data hardcode. Kita akan gunakan data dari widget.bookInfo
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
-        children: bookDetails.entries.map((entry) {
-          return _buildDetailRow(entry.key, entry.value);
-        }).toList(),
+        children: [
+          // PERBAIKAN 3: Tampilkan data secara eksplisit dari model
+          _buildDetailRow('Judul buku', bookInfo.title),
+          _buildDetailRow('Pengarang', bookInfo.author),
+          _buildDetailRow('Penerbit', bookInfo.publisher),
+          _buildDetailRow('Tahun Terbit', bookInfo.yearPublished),
+          _buildDetailRow('Halaman', bookInfo.pageCount),
+          _buildDetailRow('ISBN', bookInfo.isbn),
+          _buildDetailRow('Kategori Buku', bookInfo.category),
+          _buildDetailRow('Alamat', bookInfo.address),
+        ],
       ),
     );
   }
 
+  // Helper widget _buildDetailRow tidak perlu diubah, sudah bagus.
   Widget _buildDetailRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -34,18 +39,18 @@ class BookInfoSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 120, // Lebar tetap untuk label
+            width: 120,
             child: Text(
               label,
-              style: const TextStyle(color: Pallete.textGrayColor), // Menggunakan Pallete
+              style: const TextStyle(color: Pallete.textGrayColor),
             ),
           ),
-          const Text(': ', style: TextStyle(color: Pallete.textGrayColor)), // Menggunakan Pallete
+          const Text(': ', style: TextStyle(color: Pallete.textGrayColor)),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(fontWeight: FontWeight.w500, color: Pallete.textColor), // Menggunakan Pallete
+              style: const TextStyle(fontWeight: FontWeight.w500, color: Pallete.textColor),
             ),
           ),
         ],
