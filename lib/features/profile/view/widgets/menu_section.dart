@@ -93,6 +93,15 @@ class MenuSection extends StatelessWidget {
         _listTile('Akun', Icons.person_outline),
         _listTile('Alamat', Icons.location_on_outlined),
         ListTile(
+          leading: const Icon(Icons.lock_outline, color: Pallete.textGrayColor),
+          title: const Text('Atur Ulang Kata Sandi', style: TextStyle(color: Pallete.textColor, fontSize: 16)),
+          trailing: const Icon(Icons.chevron_right, color: Pallete.textGrayColor),
+          onTap: () {
+            // TODO: Navigasi ke halaman ganti password
+            print('Navigasi ke halaman atur ulang kata sandi');
+          },
+        ),
+        ListTile(
           leading: const Icon(Icons.logout, color: Pallete.errorColor),
           title: const Text('Logout', style: TextStyle(color: Pallete.errorColor, fontSize: 16)),
           onTap: onLogout,
