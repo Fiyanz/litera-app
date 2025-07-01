@@ -7,6 +7,7 @@ import 'package:litera_app/features/home/viewmodel/home_viewmodel.dart';
 import 'package:litera_app/features/home/view/widgets/filter_dialog.dart';
 import 'package:litera_app/features/home/view/widgets/horizontal_book_list.dart';
 import 'package:litera_app/features/home/view/widgets/wave_clipper.dart';
+import 'package:litera_app/features/profile/view/pages/profile_page.dart';
 import 'package:provider/provider.dart';
 
 
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     BookmarkPage(),       // Halaman Bookmark (index 1)
     AddBookPage(),
     ChatListPage(),   // Placeholder untuk index 3
-    Center(child: Text('Halaman Profil')), // Placeholder untuk index 4
+    ProfilePage(), // Placeholder untuk index 4
   ];
 
   // Fungsi ini akan dipanggil setiap kali item di navigasi bawah ditekan.
