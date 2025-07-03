@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
+import 'package:litera_app/features/history/views/pages/history_page.dart';
+import 'package:litera_app/features/profile/view/pages/edit_profile_page.dart';
 import 'package:litera_app/features/profile/view/pages/my_book_page.dart';
+import 'package:litera_app/features/profile/viewmodel/profile_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class MenuSection extends StatelessWidget {
   final VoidCallback onLogout;
@@ -26,7 +30,7 @@ class MenuSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _menuItem(
-          icon: Icons.book_outlined,
+          icon: Icons.menu_book_outlined,
           label: 'Buku Saya',
           onTap: () {
             // Arahkan ke halaman Buku Saya
@@ -42,19 +46,10 @@ class MenuSection extends StatelessWidget {
           },
         ),
         _menuItem(
-          icon: Icons.download_for_offline_outlined,
-          label: 'Dipinjam',
-          onTap: () {
-            // TODO: Arahkan ke halaman Dipinjam
-            print('Navigasi ke halaman Dipinjam');
-          },
-        ),
-        _menuItem(
           icon: Icons.history,
           label: 'History',
           onTap: () {
-            // TODO: Arahkan ke halaman History
-            print('Navigasi ke halaman History');
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const HistoryPage()));
           },
         ),
       ],
@@ -90,7 +85,26 @@ class MenuSection extends StatelessWidget {
   Widget _buildTextMenu(BuildContext context) {
     return Column(
       children: [
-        _listTile('Akun', Icons.person_outline),
+        ListTile(
+          leading: const Icon(Icons.person_outline, color: Pallete.textGrayColor),
+          title: const Text('Akun', style: TextStyle(color: Pallete.textColor, fontSize: 16)),
+          trailing: const Icon(Icons.chevron_right, color: Pallete.textGrayColor),
+          onTap: () {
+            // Ambil instance ViewModel yang ada
+            final viewModel = Provider.of<ProfileViewModel>(context, listen: false);
+            
+            // Navigasi ke EditProfilePage sambil memberikan ViewModel
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ChangeNotifierProvider.value(
+                  value: viewModel,
+                  child: const EditProfilePage(),
+                ),
+              ),
+            );
+          },
+        ),
         _listTile('Alamat', Icons.location_on_outlined),
         ListTile(
           leading: const Icon(Icons.lock_outline, color: Pallete.textGrayColor),

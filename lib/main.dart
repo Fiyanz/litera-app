@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:litera_app/core/theme/theme.dart';
 import 'package:litera_app/features/auth/view/pages/first_page.dart';
 import 'package:litera_app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:litera_app/features/bookmark/viewmodel/bookmark_viewmodel.dart';
-// import 'package:litera_app/features/auth/view/pages/first_page.dart';
+import 'package:litera_app/features/history/viewmodels/history_viewmodel.dart';
 import 'package:litera_app/features/home/viewmodel/home_viewmodel.dart';
-// import 'package:litera_app/features/home/view/pages/home_page.dart';
 import 'package:provider/provider.dart';
-// import 'package:litera_app/features/auth/view/pages/first_page.dart';
-// import 'package:litera_app/features/auth/view/pages/signin_page.dart';
-// import 'package:litera_app/features/auth/view/pages/signin_page.dart';
-// import 'package:litera_app/features/auth/view/pages/signup_form.dart';
-// import 'package:litera_app/features/auth/view/pages/signup_page.dart';
 
-void main() {
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null);
   runApp(
     MultiProvider(
       providers: [
@@ -25,6 +23,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (context) => BookmarkViewModel(),
+          ),
+        ChangeNotifierProvider(
+          create: (context) => HistoryViewModel(),
           ),
       ],
       child: MyApp(), // Ganti dengan SigninPage() atau SignUpForm() sesuai kebutuhan

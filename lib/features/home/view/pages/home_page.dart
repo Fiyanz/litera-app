@@ -7,6 +7,7 @@ import 'package:litera_app/features/home/viewmodel/home_viewmodel.dart';
 import 'package:litera_app/features/home/view/widgets/filter_dialog.dart';
 import 'package:litera_app/features/home/view/widgets/horizontal_book_list.dart';
 import 'package:litera_app/features/home/view/widgets/wave_clipper.dart';
+import 'package:litera_app/features/notification/views/pages/notifitations_page.dart';
 import 'package:litera_app/features/profile/view/pages/profile_page.dart';
 import 'package:provider/provider.dart';
 
@@ -134,7 +135,7 @@ class _HomePageContent extends StatelessWidget {
                                     decoration: InputDecoration(
                                       hintText: 'Cari buku, penulis...',
                                       prefixIcon: Icon(Icons.search),
-                                      suffixIcon: Icon(Icons.camera_alt_outlined),
+                                      // suffixIcon: Icon(Icons.camera_alt_outlined),
                                       isDense: true,
                                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
                                       border: InputBorder.none,
@@ -156,7 +157,14 @@ class _HomePageContent extends StatelessWidget {
                               ),
                               IconButton(
                                 icon: const Icon(Icons.notifications_none, color: Pallete.primaryLightColor, size: 28),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const NotificationPage(),
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
