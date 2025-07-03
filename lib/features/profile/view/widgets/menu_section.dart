@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
+import 'package:litera_app/features/auth/view/pages/reset_password_page.dart';
 import 'package:litera_app/features/history/views/pages/history_page.dart';
+import 'package:litera_app/features/profile/view/pages/edit_address_page.dart';
 import 'package:litera_app/features/profile/view/pages/edit_profile_page.dart';
 import 'package:litera_app/features/profile/view/pages/my_book_page.dart';
+import 'package:litera_app/features/profile/view/widgets/logout_confirmation_dialog.dart';
 import 'package:litera_app/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -105,31 +108,61 @@ class MenuSection extends StatelessWidget {
             );
           },
         ),
-        _listTile('Alamat', Icons.location_on_outlined),
+        ListTile(
+          leading: const Icon(Icons.person_outline, color: Pallete.textGrayColor),
+          title: const Text('Alamat', style: TextStyle(color: Pallete.textColor, fontSize: 16)),
+          trailing: const Icon(Icons.chevron_right, color: Pallete.textGrayColor),
+          onTap: () {
+            // Ambil instance ViewModel yang ada
+            final viewModel = Provider.of<ProfileViewModel>(context, listen: false);
+            
+            // Navigasi ke EditAddressPage sambil memberikan ViewModel
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ChangeNotifierProvider.value(
+                  value: viewModel,
+                  child: const EditAddressPage(),
+                ),
+              ),
+            );
+          }
+        ),
         ListTile(
           leading: const Icon(Icons.lock_outline, color: Pallete.textGrayColor),
           title: const Text('Atur Ulang Kata Sandi', style: TextStyle(color: Pallete.textColor, fontSize: 16)),
           trailing: const Icon(Icons.chevron_right, color: Pallete.textGrayColor),
           onTap: () {
-            // TODO: Navigasi ke halaman ganti password
-            print('Navigasi ke halaman atur ulang kata sandi');
+            Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ResetPasswordPage()),
+        );
           },
         ),
         ListTile(
           leading: const Icon(Icons.logout, color: Pallete.errorColor),
           title: const Text('Logout', style: TextStyle(color: Pallete.errorColor, fontSize: 16)),
-          onTap: onLogout,
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext dialogContext) {
+                return LogoutConfirmationDialog(
+                  onConfirm: onLogout, // Berikan fungsi onLogout ke dialog
+                );
+              },
+            );
+          },
         ),
       ],
     );
   }
 
-  Widget _listTile(String title, IconData icon) {
-    return ListTile(
-      leading: Icon(icon, color: Pallete.textGrayColor),
-      title: Text(title, style: const TextStyle(color: Pallete.textColor, fontSize: 16)),
-      trailing: const Icon(Icons.chevron_right, color: Pallete.textGrayColor),
-      onTap: () {},
-    );
-  }
+  // Widget _listTile(String title, IconData icon) {
+  //   return ListTile(
+  //     leading: Icon(icon, color: Pallete.textGrayColor),
+  //     title: Text(title, style: const TextStyle(color: Pallete.textColor, fontSize: 16)),
+  //     trailing: const Icon(Icons.chevron_right, color: Pallete.textGrayColor),
+  //     onTap: () {},
+  //   );
+  // }
 }

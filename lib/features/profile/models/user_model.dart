@@ -1,3 +1,5 @@
+import 'package:litera_app/features/profile/models/address_model.dart';
+
 class UserModel {
   final String name;
   final String username;
@@ -5,6 +7,7 @@ class UserModel {
   final String? gender;
   final String? birthDate;
   final String? email;
+  final AddressModel? address;
 
   UserModel({
     required this.name,
@@ -13,6 +16,7 @@ class UserModel {
     this.gender,
     this.birthDate,
     this.email,
+    this.address,
   });
 
   // copyWith berguna untuk membuat objek baru dengan data yang diperbarui
@@ -24,6 +28,7 @@ class UserModel {
     String? gender,
     String? birthDate,
     String? email,
+    AddressModel? address,
   }) {
     return UserModel(
       name: name ?? this.name,
@@ -32,6 +37,7 @@ class UserModel {
       gender: gender ?? this.gender,
       birthDate: birthDate ?? this.birthDate,
       email: email ?? this.email,
+      address: address ?? this.address,
     );
   }
 }
