@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:litera_app/features/balance/views/pages/withdrawal_success_page.dart';
 import '../models/transaction_model.dart';
 
 class BalanceViewModel extends ChangeNotifier {
@@ -30,48 +31,52 @@ class BalanceViewModel extends ChangeNotifier {
   }
 
   void performWithdrawal(BuildContext context) {
-    // 1. Validasi input (contoh sederhana)
-    final amountText = withdrawAmountController.text;
-    if (amountText.isEmpty || eWalletNameController.text.isEmpty || eWalletNumberController.text.isEmpty) {
-      _showErrorSnackbar(context, 'Semua field wajib diisi.');
-      return;
-    }
-    
-    final amount = double.tryParse(amountText);
-    if (amount == null || amount < 10000) {
-      _showErrorSnackbar(context, 'Minimum penarikan adalah Rp 10.000.');
-      return;
-    }
-
-    if (amount > _totalBalance) {
-      _showErrorSnackbar(context, 'Saldo tidak mencukupi.');
-      return;
-    }
-
-    _totalBalance -= amount;
-    _allTransactions.insert(
-      0, // Tambahkan ke paling atas daftar
-      TransactionModel(
-        id: DateTime.now().toIso8601String(),
-        title: 'Tarik Saldo',
-        description: 'ke ${eWalletNameController.text}',
-        amount: amount,
-        type: TransactionType.keluar,
-        date: DateTime.now(),
-      ),
-    );
-
-    withdrawAmountController.clear();
-    eWalletNameController.clear();
-    eWalletNumberController.clear();
-    notifyListeners();
-
-    // 4. Tampilkan notifikasi sukses & kembali
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Penarikan saldo berhasil diproses!'), backgroundColor: Colors.green),
-    );
-    Navigator.of(context).pop();
+  // 1. Blok validasi tetap sama, ini sudah benar.
+  final amountText = withdrawAmountController.text;
+  if (amountText.isEmpty || eWalletNameController.text.isEmpty || eWalletNumberController.text.isEmpty) {
+    _showErrorSnackbar(context, 'Semua field wajib diisi.');
+    return;
   }
+  
+  final amount = double.tryParse(amountText);
+  if (amount == null || amount < 10000) {
+    _showErrorSnackbar(context, 'Minimum penarikan adalah Rp 10.000.');
+    return;
+  }
+
+  if (amount > _totalBalance) {
+    _showErrorSnackbar(context, 'Saldo tidak mencukupi.');
+    return;
+  }
+
+  // 2. Buat objek transaksi HANYA SATU KALI.
+  final newTransaction = TransactionModel(
+    id: DateTime.now().toIso8601String(),
+    title: 'Tarik Saldo',
+    description: 'ke ${eWalletNameController.text}',
+    amount: amount,
+    type: TransactionType.keluar,
+    date: DateTime.now(),
+  );
+
+  // 3. Perbarui state dan tambahkan transaksi ke daftar HANYA SATU KALI.
+  _totalBalance -= amount;
+  _allTransactions.insert(0, newTransaction);
+  
+  // 4. Bersihkan controller & update UI CUKUP SATU KALI sebelum navigasi.
+  withdrawAmountController.clear();
+  eWalletNameController.clear();
+  eWalletNumberController.clear();
+  notifyListeners();
+
+  // 5. Lakukan navigasi ke halaman sukses. Semua kode setelah ini dihapus.
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (_) => WithdrawalSuccessPage(transaction: newTransaction),
+    ),
+  );
+}
 
   void _showErrorSnackbar(BuildContext context, String message) {
       ScaffoldMessenger.of(context).showSnackBar(
