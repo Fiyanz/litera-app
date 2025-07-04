@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
-import 'package:litera_app/features/booking/views/pages/booking_confirmation_page.dart';
 import 'package:litera_app/features/profile/viewmodel/profile_viewmodel.dart';
 import 'package:litera_app/features/profile/view/widgets/menu_section.dart';
 import 'package:litera_app/features/profile/view/widgets/profile_header.dart';
@@ -46,16 +45,6 @@ class ProfilePage extends StatelessWidget {
                   MenuSection(
                     onLogout: () {
                       viewModel.logout(context); // Panggil fungsi logout dari ViewModel
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    child: const Text('Ke Halaman Konfirmasi Sewa'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const BookingConfirmationPage()),
-                      );
                     },
                   ),
                 ],

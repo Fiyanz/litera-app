@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
 import 'package:litera_app/features/auth/view/pages/reset_password_page.dart';
 import 'package:litera_app/features/balance/views/pages/balance_page.dart';
+import 'package:litera_app/features/booking/views/pages/booking_confirmation_page.dart';
 import 'package:litera_app/features/history/views/pages/history_page.dart';
 import 'package:litera_app/features/profile/view/pages/edit_address_page.dart';
 import 'package:litera_app/features/profile/view/pages/edit_profile_page.dart';
@@ -135,10 +136,22 @@ class MenuSection extends StatelessWidget {
           trailing: const Icon(Icons.chevron_right, color: Pallete.textGrayColor),
           onTap: () {
             Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ResetPasswordPage()),
-        );
+              context,
+              MaterialPageRoute(builder: (context) => const ResetPasswordPage()),
+            );
           },
+        ),
+
+        ListTile(
+          leading: const Icon(Icons.receipt_long_outlined, color: Pallete.textGrayColor),
+          title: const Text('Konfirmasi Sewa', style: TextStyle(color: Pallete.textColor, fontSize: 16)),
+          trailing: const Icon(Icons.chevron_right, color: Pallete.textGrayColor),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BookingConfirmationPage()),
+            );
+          }
         ),
         ListTile(
           leading: const Icon(Icons.logout, color: Pallete.errorColor),
