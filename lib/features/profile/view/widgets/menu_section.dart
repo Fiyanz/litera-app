@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
 import 'package:litera_app/features/auth/view/pages/reset_password_page.dart';
+import 'package:litera_app/features/balance/views/pages/balance_page.dart';
 import 'package:litera_app/features/history/views/pages/history_page.dart';
 import 'package:litera_app/features/profile/view/pages/edit_address_page.dart';
 import 'package:litera_app/features/profile/view/pages/edit_profile_page.dart';
@@ -44,8 +45,8 @@ class MenuSection extends StatelessWidget {
           icon: Icons.account_balance_wallet_outlined,
           label: 'Saldo',
           onTap: () {
-            // TODO: Arahkan ke halaman Saldo
-            print('Navigasi ke halaman Saldo');
+            // Navigasi ke halaman Saldo
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const BalancePage()));
           },
         ),
         _menuItem(
