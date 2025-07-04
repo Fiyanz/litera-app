@@ -57,6 +57,13 @@ class MenuSection extends StatelessWidget {
             Navigator.push(context, MaterialPageRoute(builder: (context) => const HistoryPage()));
           },
         ),
+        _menuItem(
+          icon: Icons.receipt_long_outlined,
+          label: 'Transaksi',
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const BookingConfirmationPage()));
+          },
+        ),
       ],
     );
   }
@@ -140,18 +147,6 @@ class MenuSection extends StatelessWidget {
               MaterialPageRoute(builder: (context) => const ResetPasswordPage()),
             );
           },
-        ),
-
-        ListTile(
-          leading: const Icon(Icons.receipt_long_outlined, color: Pallete.textGrayColor),
-          title: const Text('Konfirmasi Sewa', style: TextStyle(color: Pallete.textColor, fontSize: 16)),
-          trailing: const Icon(Icons.chevron_right, color: Pallete.textGrayColor),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const BookingConfirmationPage()),
-            );
-          }
         ),
         ListTile(
           leading: const Icon(Icons.logout, color: Pallete.errorColor),
