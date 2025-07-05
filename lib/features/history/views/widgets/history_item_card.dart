@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:litera_app/features/booking/views/pages/rental_detail_page.dart';
 import 'package:litera_app/features/history/viewmodels/history_viewmodel.dart';
 import 'package:provider/provider.dart';
 import '../../models/history_model.dart';
@@ -87,7 +88,13 @@ class HistoryItemCard extends StatelessWidget {
                     children: [
                       Text(viewModel.formatPrice(history.price), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.teal)),
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          // Tambahkan navigasi ke halaman detail
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const RentalDetailPage()),
+                          );
+                        },
                         icon: const Icon(Icons.visibility, size: 16),
                         label: const Text('Detail'),
                       ),
