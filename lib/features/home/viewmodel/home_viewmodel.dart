@@ -76,7 +76,7 @@ class HomeViewModel extends ChangeNotifier {
     final Map<String, List<String>> filterData = {
       'years': ['2025', '2024', '2023', '2022', '2021'],
       'locations': ['Surabaya', 'Jakarta', 'Bandung', 'Yogyakarta'],
-      'categories': ['Fiksi', 'Non-Fiksi', 'Sains', 'Sejarah', 'Biografi'],
+      'categories': ['Fiksi', 'Non-Fiksi'],
     };
     
     _setLoading(false);
