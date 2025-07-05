@@ -3,6 +3,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:litera_app/core/theme/theme.dart';
 import 'package:litera_app/features/auth/view/pages/first_page.dart';
 import 'package:litera_app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:litera_app/features/booking/viewmodels/booking_viewmodel.dart';
 import 'package:litera_app/features/bookmark/viewmodel/bookmark_viewmodel.dart';
 import 'package:litera_app/features/history/viewmodels/history_viewmodel.dart';
 import 'package:litera_app/features/home/viewmodel/home_viewmodel.dart';
@@ -26,6 +27,9 @@ void main() async {
           ),
         ChangeNotifierProvider(
           create: (context) => HistoryViewModel(),
+          ),
+        ChangeNotifierProvider(
+          create: (context) => BookingViewModel(),
           ),
       ],
       child: MyApp(), // Ganti dengan SigninPage() atau SignUpForm() sesuai kebutuhan

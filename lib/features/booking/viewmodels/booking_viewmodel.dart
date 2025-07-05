@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:litera_app/features/booking/views/pages/payment_page.dart';
+import 'package:litera_app/features/booking/views/pages/payment_success_page.dart';
+import 'package:provider/provider.dart';
 import '../models/booking_model.dart';
 
 // Enum untuk pilihan agar kode lebih aman dan terbaca
@@ -8,7 +11,6 @@ enum PickupMethod { cod, inPlace }
 class BookingViewModel extends ChangeNotifier {
   late BookingModel bookingDetails;
 
-  // State untuk pilihan pengguna
   PaymentMethod? _selectedPaymentMethod;
   PaymentMethod? get selectedPaymentMethod => _selectedPaymentMethod;
 
@@ -29,20 +31,43 @@ class BookingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void confirmBooking(BuildContext context) {
+  // Method ini mengarahkan ke halaman pembayaran
+  void navigateToPayment(BuildContext context) {
     if (_selectedPaymentMethod == null || _selectedPickupMethod == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Harap pilih metode pembayaran dan pengambilan.'), backgroundColor: Colors.red),
       );
       return;
     }
-    // TODO: Proses konfirmasi ke backend/API
-    print('Booking dikonfirmasi!');
-    print('Payment: $_selectedPaymentMethod, Pickup: $_selectedPickupMethod');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ChangeNotifierProvider.value(
+          value: this,
+          child: const PaymentPage(),
+        ),
+      ),
+    );
+  }
 
-    // Navigasi ke halaman sukses atau halaman selanjutnya
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Konfirmasi berhasil!'), backgroundColor: Colors.green),
+  // Method ini dipanggil dari PaymentPage untuk menyelesaikan proses
+  void confirmFinalPayment(BuildContext context) {
+    print('Pembayaran dikonfirmasi, menyelesaikan pesanan...');
+
+    // Siapkan data yang akan dikirim
+    final bookingData = bookingDetails;
+    final pickupMethod = _selectedPickupMethod!;
+
+    // Navigasi ke halaman sukses sambil mengirim data secara langsung
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PaymentSuccessPage(
+          bookingDetails: bookingData,
+          selectedPickupMethod: pickupMethod,
+        ),
+      ),
+      (route) => route.isFirst,
     );
   }
 
@@ -50,7 +75,7 @@ class BookingViewModel extends ChangeNotifier {
     bookingDetails = BookingModel(
       bookTitle: 'Laut Bercerita',
       bookAuthor: 'Oleh Leila S. Chudori',
-      bookImageUrl: 'https://i.ibb.co/6PZHy1N/laut-bercerita.jpg', // URL gambar yang bisa diakses
+      bookImageUrl: 'https://i.ibb.co/6PZHy1N/laut-bercerita.jpg',
       isbn: 'ISBN 978-602-424-694-5',
       year: 'Tahun : 2017',
       pricePerDay: 500,

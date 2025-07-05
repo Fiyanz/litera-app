@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:litera_app/core/theme/app_pallete.dart';
 import 'package:litera_app/features/booking/viewmodels/booking_viewmodel.dart';
+import 'package:litera_app/features/booking/views/widgets/pickup_method_details_box.dart';
 import 'package:provider/provider.dart';
 // Import semua widget baru
 import '../widgets/book_details_header.dart';
@@ -34,7 +35,10 @@ class BookingConfirmationPage extends StatelessWidget {
                   const SizedBox(height: 24),
                   const PaymentMethodSelector(),
                   const SizedBox(height: 24),
-                  const PickupMethodSelector(), // Asumsikan widget ini juga sudah dibuat
+                  const PickupMethodSelector(), 
+
+                  if (viewModel.selectedPickupMethod == PickupMethod.cod)
+                    const PickupMethodDetailsBox(),
                 ],
               ),
             );
@@ -45,10 +49,13 @@ class BookingConfirmationPage extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
-                onPressed: () => viewModel.confirmBooking(context),
+                onPressed: () => viewModel.navigateToPayment(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Pallete.primaryColor,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: const Text('Konfirmasi', style: TextStyle(fontSize: 18, color: Colors.white)),
               ),
