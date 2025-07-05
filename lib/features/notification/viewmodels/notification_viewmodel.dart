@@ -46,8 +46,8 @@ class NotificationViewModel extends ChangeNotifier {
       ),
        NotificationModel(
         id: '4',
-        title: 'Buku Baru Telah Tiba',
-        body: "Buku 'Bumi' oleh Tere Liye sekarang tersedia untuk disewa.",
+        title: 'Foto telah diupload',
+        body: "Peminjam telah mengunggah foto buku sebagai bukti penerimaan.",
         type: NotificationType.buku,
         createdAt: DateTime.now().subtract(const Duration(days: 2)),
       ),
