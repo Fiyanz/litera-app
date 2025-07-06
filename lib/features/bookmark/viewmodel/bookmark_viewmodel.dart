@@ -15,22 +15,40 @@ class BookmarkViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    await Future.delayed(const Duration(seconds: 1)); // Simulasi API
+    await Future.delayed(const Duration(seconds: 1)); 
 
-    // --- PERBAIKAN UTAMA DI SINI ---
-    // Ganti URL gambar dengan yang berfungsi dari ui-avatars.com
     _bookmarkedBooks = [
       BookmarkedItemData(
-        bookId: 'bk_123', ownerId: 'pemilik_789', pricePerDay: 1000,
-        // PERBAIKAN URL:
-        imageUrls: ['https://ui-avatars.com/api/?name=Bumi+Manusia&size=250&background=random&color=fff&font-size=0.3'],
-        bookInfo: BookInfo(title: 'Bumi Manusia', author: 'Pramoedya Ananta Toer', publisher: 'Hasta Mitra', yearPublished: '1980', pageCount: '535', isbn: '979-8659-10-5', category: 'Fiksi Sejarah', address: 'Jl. Merdeka No. 45, Bandung'),
+        bookId: 'bk_138', 
+        ownerId: 'pemilik_808', 
+        pricePerDay: 22000,
+        imageUrls: ['https://cdn.gramedia.com/uploads/items/The_Kite_Runner.jpg'],
+        bookInfo: BookInfo(
+          title: 'The Kite Runner', 
+          author: 'Khaled Hosseini', 
+          publisher: 'Gramedia', 
+          yearPublished: '2019', 
+          pageCount: '371', 
+          isbn: '978-979-22-5022-6', 
+          category: 'Fiksi Filosofis', 
+          address: 'Jl. Sultan Iskandar Muda No. 90, Jakarta Barat'
+        ),
       ),
       BookmarkedItemData(
-        bookId: 'bk_456', ownerId: 'pemilik_123', pricePerDay: 500,
-        // PERBAIKAN URL:
-        imageUrls: ['https://ui-avatars.com/api/?name=Laut+Bercerita&size=250&background=random&color=fff&font-size=0.3'],
-        bookInfo: BookInfo(title: 'Laut Bercerita', author: 'Leila S. Chudori', publisher: 'KPG', yearPublished: '2017', pageCount: '379', isbn: '978-602-424-694-5', category: 'Fiksi', address: 'Jl. Raya No. 123, Jakarta'),
+        bookId: 'bk_139', 
+        ownerId: 'pemilik_809', 
+        pricePerDay: 30000,
+        imageUrls: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWAx7Gj-ZCgsO8GjurC2UNoYnIRhIZth6OnA&s'],
+        bookInfo: BookInfo(
+          title: 'Filsafat untuk Pemula', 
+          author: 'Richard Osborne', 
+          publisher: 'Narasi', 
+          yearPublished: '2023', 
+          pageCount: '288', 
+          isbn: '978-623-7586-88-3', 
+          category: 'Filsafat', 
+          address: 'Jl. Cihampelas No. 25, Bandung'
+        ),
       ),
       // Anda bisa tambahkan buku lain yang di-bookmark di sini
     ];
