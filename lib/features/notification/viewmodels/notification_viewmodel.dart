@@ -39,8 +39,8 @@ class NotificationViewModel extends ChangeNotifier {
       ),
       NotificationModel(
         id: '3',
-        title: 'Tawaran Spesial!',
-        body: "Dapatkan diskon 50% untuk penyewaan buku fiksi minggu ini.",
+        title: 'Tawaran penyewaan Anda telah disetujui',
+        body: "Silakan lanjut pembayaran dan pengambilan sesuai metode yang dipilih.",
         type: NotificationType.tawaran,
         createdAt: DateTime.now().subtract(const Duration(days: 1)),
       ),
